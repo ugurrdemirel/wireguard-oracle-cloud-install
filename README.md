@@ -6,9 +6,10 @@ Wireguard VPN Setup for Oracle Cloud Instances
 Oracle Cloud instances need some additional configuration to get WireGuard up and running as expected. Here is how we do that:
 
 ## Please Note: 
-- The wireguard kernel mod ships with the latest ubuntu image on Oracle Cloud.
+- The wireguard kernel mod ships with the latest Ubuntu image on Oracle Cloud.
 - All scripts must be run as root.
 
+## Installation
 Download our scripts ( Huge thanks to [@vaughngx4](https://github.com/vaughngx4)):
 ```bash
 sudo su
