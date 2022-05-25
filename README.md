@@ -29,8 +29,12 @@ Generate the config(follow the prompts, this will not start the server):
 ./wireguard-autoconfig.sh
 ```
 
-Finally, add a peer and start the server:
+A reboot is needed at this point. Answer 'y' to the reboot prompt to reboot.
+
+Once you've reconnected to the instance, add a peer and start the server:
 ```bash
+sudo su
+cd /etc/wireguard
 ./add-peer.sh
 ```
 

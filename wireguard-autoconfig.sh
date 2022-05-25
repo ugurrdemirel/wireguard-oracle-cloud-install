@@ -20,8 +20,13 @@ while [[ $hasRC == '' ]];do
     exit 1
 done
 
+systemctl stop resolvconf
+rm -f /etc/resolv.conf
+ln -s /run/resolvconf/resolv.conf /etc/resolv.conf
+systemctl restart resolvconf
+
 hasQR=$(which qrencode)
-while [[ $hasWg == '' ]];do
+while [[ $hasQR == '' ]];do
     echo 'qrencode not installed, attempting to install...'
     apt-get install -y qrencode
     break;
@@ -75,3 +80,9 @@ sed -i "s;REF_SERVER_PORT;$server_port;g" wg0.conf
 systemctl enable wg-quick@wg0.service
 
 echo 'Done! Run ./add-peer.sh in /etc/wireguard/ to add the first peer and start the server.'
+read -p 'A reboot is needed at this point. Reboot now?(y/n)' reboot_now
+
+while [[ $reboot_now == 'y' || $reboot_now == 'Y' || $reboot_now == 'yes' || $reboot_now == 'Yes' ]];do
+    reboot
+    exit 0
+done
