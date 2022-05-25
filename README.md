@@ -12,7 +12,7 @@ sudo dnf install -y wireguard-tools qrencode
 Download our scripts:
 ```bash
 sudo cd /etc/wireguard
-sudo git clone https://github.com/ugurrdemirel/wireguard-oracle-cloud-install.git
+sudo git clone https://github.com/vaughngx4/wireguard-oracle-cloud-install.git
 sudo mv wireguard-oracle-cloud-install/* ./
 sudo rm -rf wireguard-oracle-cloud-install
 ```
