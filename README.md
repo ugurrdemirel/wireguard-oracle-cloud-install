@@ -10,6 +10,11 @@ Oracle Cloud instances need some additional configuration to get WireGuard up an
 - All scripts must be run as root.
 
 ## Installation
+Install dependencies:
+```bash
+sudo apt-get update && sudo apt-get install -y wireguard qrencode resolvconf
+```
+
 Download our scripts ( Huge thanks to [@vaughngx4](https://github.com/vaughngx4)):
 ```bash
 sudo su
