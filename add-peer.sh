@@ -1,15 +1,21 @@
 #!/bin/bash
 echo '== STARTING WIREGUARD PEER CONFIGURATION =='
-hasModule=$(modinfo wireguard)
 
-while [[ $(echo $hasModule | grep -o 'ERROR') == 'ERROR' ]];do
+hasWG=$(which wg-quick)
+while [[ $hasWG == '' ]];do
     echo 'WireGuard not installed. Run wireguard-autoconfig.sh first.'
     exit 1
     break;
 done
 
-hasSettings=$(ls /etc/wireguard/settings/peer.next)
+hasQR=$(which qrencode)
+while [[ $hasWg == '' ]];do
+    echo 'qrencode not installed. Run wireguard-autoconfig.sh first.'
+    exit 1
+    break;
+done
 
+hasSettings=$(ls /etc/wireguard/settings/peer.next)
 while [[ $hasSettings != '/etc/wireguard/settings/peer.next' ]];do
     echo 'Script config not found. Run wireguard-autoconfig.sh first.'
     exit 1
@@ -31,7 +37,7 @@ cat << EOF > peer.conf
 [Interface]
 PrivateKey = REF_PEER_KEY
 Address = REF_PEER_ADDRESS
-DNS = REF_PEER_DNS
+DNS = 1.1.1.2, 1.0.0.2, 2606:4700:4700::1112, 2606:4700:4700::1002
 
 [Peer]
 PublicKey = REF_SERVER_PUBLIC_KEY
@@ -42,12 +48,12 @@ external_ip=$(curl ipinfo.io/ip)
 server_endpoint="$external_ip:$(cat ../settings/port)"
 ipv4_peer_addr="$(cat ../settings/ipv4)${peerNum}/24"
 ipv6_peer_addr="$(cat ../settings/ipv6):${peerNum}/64"
-dns="$(cat ../settings/ipv4)1, $(cat ../settings/ipv6):1"
+#dns="$(cat ../settings/ipv4)1, $(cat ../settings/ipv6):1"
 
 echo '== SETTING PEER CONFIGURATION =='
 sed -i "s;REF_PEER_KEY;$(cat privatekey);g" peer.conf
 sed -i "s;REF_PEER_ADDRESS;$ipv4_peer_addr, $ipv6_peer_addr;g" peer.conf
-sed -i "s;REF_PEER_DNS;$dns;g" peer.conf
+#sed -i "s;REF_PEER_DNS;$dns;g" peer.conf
 sed -i "s;REF_SERVER_PUBLIC_KEY;$(cat ../publickey);g" peer.conf
 sed -i "s;REF_SERVER_ENDPOINT;$server_endpoint;g" peer.conf
 
