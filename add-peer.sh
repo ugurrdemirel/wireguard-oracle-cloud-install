@@ -1,25 +1,33 @@
 #!/bin/bash
-echo '== STARTING WIREGUARD PEER CONFIGURATION =='
+echo 'Starting WireGuard peer configuration...'
+
+while [[ $EUID != 0 ]];do
+	echo "This script must be run as root."
+	exit 1
+done
 
 hasWG=$(which wg-quick)
 while [[ $hasWG == '' ]];do
     echo 'WireGuard not installed. Run wireguard-autoconfig.sh first.'
     exit 1
-    break;
+done
+
+hasRC=$(which resolvconf)
+while [[ $hasRC == '' ]];do
+    echo 'resolvconf not installed. Run wireguard-autoconfig.sh first.'
+    exit 1
 done
 
 hasQR=$(which qrencode)
-while [[ $hasWg == '' ]];do
+while [[ $hasQR == '' ]];do
     echo 'qrencode not installed. Run wireguard-autoconfig.sh first.'
     exit 1
-    break;
 done
 
 hasSettings=$(ls /etc/wireguard/settings/peer.next)
 while [[ $hasSettings != '/etc/wireguard/settings/peer.next' ]];do
     echo 'Script config not found. Run wireguard-autoconfig.sh first.'
     exit 1
-    break;
 done
 
 cd /etc/wireguard

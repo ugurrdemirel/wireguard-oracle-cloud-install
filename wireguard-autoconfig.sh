@@ -1,17 +1,29 @@
 #!/bin/bash
 echo 'Starting server configuration...'
 
+while [[ $EUID != 0 ]];do
+	echo "This script must be run as root."
+	exit 1
+done
+
 hasWG=$(which wg-quick)
 while [[ $hasWG == '' ]];do
     echo 'WireGuard not installed, attempting to install...'
-    sudo dnf install -y wireguard-tools
+    apt-get install -y wireguard
     break;
+done
+
+hasRC=$(which resolvconf)
+while [[ $hasRC == '' ]];do
+    echo 'resolvconf not installed, attempting to install...'
+    apt-get install -y resolvconf
+    exit 1
 done
 
 hasQR=$(which qrencode)
 while [[ $hasWg == '' ]];do
     echo 'qrencode not installed, attempting to install...'
-    sudo dnf install -y qrencode
+    apt-get install -y qrencode
     break;
 done
 
@@ -60,5 +72,6 @@ echo 'Setting Configuration...'
 sed -i "s;REF_SERVER_KEY;$(cat privatekey);g" wg0.conf
 sed -i "s;REF_SERVER_ADDRESS;$ipv4_server_addr, $ipv6_server_addr;g" wg0.conf
 sed -i "s;REF_SERVER_PORT;$server_port;g" wg0.conf
+systemctl enable wg-quick@wg0.service
 
 echo 'Done! Run ./add-peer.sh in /etc/wireguard/ to add the first peer and start the server.'
