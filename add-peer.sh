@@ -38,7 +38,7 @@ echo $(($peerNum + 1)) > settings/peer.next
 mkdir peer${peerNum}
 cd peer${peerNum}
 
-echo '== GENERATING KEYPAIR =='
+echo 'Generating keypair...'
 umask 077
 wg genkey | tee privatekey | wg pubkey > publickey
 cat << EOF > peer.conf
@@ -58,7 +58,7 @@ ipv4_peer_addr="$(cat ../settings/ipv4)${peerNum}/24"
 ipv6_peer_addr="$(cat ../settings/ipv6):${peerNum}/64"
 #dns="$(cat ../settings/ipv4)1, $(cat ../settings/ipv6):1"
 
-echo '== SETTING PEER CONFIGURATION =='
+echo 'Setting peer configuration...'
 sed -i "s;REF_PEER_KEY;$(cat privatekey);g" peer.conf
 sed -i "s;REF_PEER_ADDRESS;$ipv4_peer_addr, $ipv6_peer_addr;g" peer.conf
 #sed -i "s;REF_PEER_DNS;$dns;g" peer.conf
@@ -67,7 +67,7 @@ sed -i "s;REF_SERVER_ENDPOINT;$server_endpoint;g" peer.conf
 
 wg-quick down wg0
 
-echo '== UPDATING SERVER CONFIGURATION =='
+echo 'Updating server configuration...'
 cat << EOF >> ../wg0.conf
 
 [Peer]
@@ -80,4 +80,5 @@ sed -i "s;REF_PEER_IPS;$allowed_ips;g" ../wg0.conf
 
 wg-quick up wg0
 
+echo "You can connect using the config /etc/wireguard/peer${peerNum}/peer.conf -- or -- the QR code below:"
 cat peer.conf | qrencode --type utf8
