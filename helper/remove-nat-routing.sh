@@ -2,7 +2,7 @@
 IPT="/sbin/iptables"
 IPT6="/sbin/ip6tables"
 
-IN_FACE="ens3"                                          # NIC connected to the internet
+IN_FACE=$(ip -o link show | awk '{print $2,$9}' | tr -d ' ' | grep 'UP' | grep -o [a-z0-9]*: | tr -d ':') # NIC connected to the internet
 WG_FACE="wg0"                                           # WG NIC
 SUB_NET="$(cat /etc/wireguard/settings/ipv4)0/24"       # WG IPv4 sub/net aka CIDR
 WG_PORT="$(cat /etc/wireguard/settings/port)"           # WG udp port
