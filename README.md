@@ -1,23 +1,25 @@
 # WireGuard for Oracle Cloud
 
-!!! IMPORTANT !!! As of latest, handshake does not complete. I will fix soon. !!!
-
 Wireguard VPN Setup for Oracle Cloud Instances  
 Oracle Cloud instances need some additional configuration to get WireGuard up and running as expected. Here is how we do that:
 
 ## Please Note: 
 - The wireguard kernel mod ships with the latest Ubuntu image on Oracle Cloud.
+- The image used for testing is Ubuntu 22.04 Minimal aarch64
 - All scripts must be run as root.
 
 ## Installation
 Install dependencies:
 ```bash
-sudo apt-get update && sudo apt-get install -y wireguard qrencode resolvconf
+sudo apt-get update && sudo apt-get install -y wireguard qrencode resolvconf git
 ```
 
-Download our scripts ( Huge thanks to [@vaughngx4](https://github.com/vaughngx4)):
+Continue as root:
 ```bash
 sudo su
+```
+Download and install our scripts ( Huge thanks to [@vaughngx4](https://github.com/vaughngx4)):
+```bash
 cd /etc/wireguard
 git clone https://github.com/ugurrdemirel/wireguard-oracle-cloud-install.git
 mv wireguard-oracle-cloud-install/* ./
