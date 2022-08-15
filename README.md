@@ -1,5 +1,7 @@
 # WireGuard for Oracle Cloud
 
+!!! IMPORTANT !!! As of latest, handshake does not complete. I will fix soon. !!!
+
 Wireguard VPN Setup for Oracle Cloud Instances  
 Oracle Cloud instances need some additional configuration to get WireGuard up and running as expected. Here is how we do that:
 
