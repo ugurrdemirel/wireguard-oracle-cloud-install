@@ -43,3 +43,36 @@ cd /etc/wireguard
 You can use the qr code that is ouput to the terminal or copy the configuration from `/etc/wireguard/peerX`('X' being the peer number). The `add-peer.sh` script will automatically restart the server to apply changes. To add another peer, simply run the script again. Peer configs can found in folders inside `/etc/wireguard/` starting with folder name `peer2`(the peer number corresponds with the peer's IP address).
 
 That's it, you can now connect to the vpn using the auto generated configs :)
+
+
+## Oracle Cloud IP Policy 
+
+The setup can fail to connect due to Oracle IP Policy set by Oracle Cloud Free Tier. Reddit user [DecisionBright](https://www.reddit.com/user/DecisionBright/) came up with a solution.
+
+0 - disable your firewall temporarily (important during taking these steps):
+
+```bash
+sudo ufw disable
+```
+
+1 - Go to /etc/iptables/rules.v4
+
+```bash
+sudo nano /etc/iptables/rules.v4
+```
+
+2 - replace the contents of this file with the following:
+
+```bash
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0] 
+:OUTPUT ACCEPT [0:0] 
+COMMIT
+```
+
+3 - Save the file (CTRL+X > y > Enter) and reboot:
+
+```bash
+sudo reboot
+```
