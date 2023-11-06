@@ -33,7 +33,7 @@ while [[ $hasQR == '' ]];do
 done
 
 hasConf=$(ls /etc/wireguard)
-while [[ $(echo $hasConf | grep -o 'wg0.conf') == 'wg0.conf' ]];do
+while [[ $(echo $hasConf | grep 'wg0.conf') == 'wg0.conf' ]];do
     echo 'wg0.conf already exists, exiting.'
     exit 0
     break;
